@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import csurf from "csurf";
+import connectDB from "./config/db";
+import authRoutes from "./routes/auth.route"
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(cors({
 
 app.use(express.json());
 
+/*
 app.use(csurf({
     cookie: {
         httpOnly: true,
@@ -27,6 +30,15 @@ app.use(csurf({
         sameSite: "strict"
     }
 }));
+
+app.get("/api/csrf-token", (req, res) => {
+    res.json({ csrfToken: req.csrfToken() });
+});
+*/
+
+app.use("/api/auth", authRoutes)
+
+connectDB()
 
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
